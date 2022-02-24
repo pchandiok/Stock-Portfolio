@@ -1,0 +1,73 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<button class="btn btn-success" @onclick="GetStock">Get Quote</button>
+
+@* <div class="row">
+    <div class="col-2">
+        <label>Company Name:</label>
+    </div>
+    <div class="col-3">
+        <label>@stock["companyName"]</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-2">
+        <label>Currency:</label>
+    </div>
+    <div class="col-3">
+        <label>@stock["currency"]</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-2">
+        <label>Opening Price:</label>
+    </div>
+    <div class="col-3">
+        <label>@stock["iexOpen"]</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-2">
+        <label>Closing Price:</label>
+    </div>
+    <div class="col-3">
+        <label>@stock["iexClose"]</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-2">
+        <label>Exchange:</label>
+    </div>
+    <div class="col-3">
+        <label>@stock["primaryExchange"]</label>
+    </div>
+</div> *@
+
+
+@code
+{
+    HttpClient client = new HttpClient();
+    string response;
+    dynamic? stock;
+    
+    private async Task GetStock()
+    {
+        response = await client.GetStringAsync("https://cloud.iexapis.com/stable/stock/IBM/quote?token=pk_390d6e1502f74704a024a370ee96ed0b");
+        Console.WriteLine(response);
+        stock = JsonConvert.DeserializeObject<dynamic>(response);
+        Console.WriteLine(stock["companyName"]);
+    }
+}
+
+@* Intra Day  *@
+@* https://cloud.iexapis.com/stable/stock/BAC/intraday-prices?token=YOUR_TOKEN_HERE&chartLast=20  *@
+
+@* https://cloud.iexapis.com/stable/stock/FB/chart/date/20191107?token=YOUR_TOKEN_HERE  *@
