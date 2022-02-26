@@ -1,6 +1,26 @@
 ﻿@page "/quote"
 <h3>Quote</h3>
 
+<input @bind="Symbol" />
+<button class="btn btn-primary" @onclick="GetQuote">Get Quote</button>
+<table class="table table-bordered">
+    <tr>
+        <td>@Stock.Symbol</td>
+        <td>@Stock.CompanyName</td>
+        <td>@Stock.LatestPrice</td>
+    </tr>
+</table>
 @code {
+    private HttpClient client = new HttpClient();
+    private Stock? Stock { get; set; } = new Stock();
 
+    [Parameter]
+    public string? Symbol { get; set; }
+
+    private async Task GetQuote()
+    {
+        client.BaseAddress = new Uri("https://localhost:7131/");
+        Stock = await client.GetFromJsonAsync<Stock>($"api/Stock/{Symbol}");
+        Console.WriteLine(Stock.CompanyName);
+    }
 }
