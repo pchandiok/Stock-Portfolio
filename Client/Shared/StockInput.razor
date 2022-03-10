@@ -1,0 +1,26 @@
+﻿<input @bind="Symbol" />
+<button class="btn btn-primary" @onclick="GetQuote">Get Quote</button>
+
+@code
+{
+
+    [Parameter]
+    public Stock? Stock { get; set; }
+
+    [Parameter]
+    public string? Symbol { get; set; }
+
+    
+    [Parameter]
+    public EventCallback<Stock> StockChanged { get; set; }
+
+    private async Task GetQuote()
+    {
+        using (var client = new HttpClient())
+        {
+            client.BaseAddress = new Uri("https://localhost:7131/");
+            Stock = await client.GetFromJsonAsync<Stock>($"api/Stock/{Symbol}");
+            await StockChanged.InvokeAsync(Stock);
+        }
+    }       
+}

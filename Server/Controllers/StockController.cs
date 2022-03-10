@@ -32,7 +32,16 @@ public class StockController : ControllerBase
         }
         catch(Exception)
         {  
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            // return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            Stock = new Stock()
+            {
+                CompanyName = "Error retrieving data from the database",
+                Symbol = "####",
+                Currency = "####",
+                High = 0,
+                Low = 0,
+                LatestPrice = 0
+            };
         }
 
         return Stock;
